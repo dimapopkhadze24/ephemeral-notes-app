@@ -1,42 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="./styles.css" />
-  <script type='module' src='./app.js'></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ephemeral Notes App</title>
+  <link rel="stylesheet" href="./src/index.css">
 </head>
 <body>
   <div id="bar"><pear-ctrl></pear-ctrl></div>
-  <main>
-    <div id="setup">
-      <div>
-        <button id="create-chat-room">Create</button>
-      </div>
-      <div id="or">
-        - or -
-      </div>
-      <form id="join-form">
-        <button type="submit" id="join-chat-room">Join</button>
-        <input required id="join-chat-room-topic" type="text" placeholder="Chat room Topic" />
-      </form>
-    </div>
-    <div id="loading" class="hidden">Loading ...</div>
-    <div id="chat" class="hidden">
-      <div id="header">
-        <div id="details">
-          <div>
-            Topic: <span id="chat-room-topic"></span>
-          </div>
-          <div>
-            Peers: <span id="peers-count">0</span>
-          </div>
-        </div>
-      </div>
-      <div id="messages"></div>
-      <form id="message-form">
-        <input id="message" type="text" />
-        <input type="submit" value="Send" />
-      </form>
-    </div>
-  </main>
+  <div id="root"></div>
+  <script type="module" src="./build/src/index.js" defer></script>
 </body>
 </html>
