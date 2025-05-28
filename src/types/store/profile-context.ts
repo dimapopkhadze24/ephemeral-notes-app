@@ -1,13 +1,7 @@
 import Corestore from "corestore";
 import Hyperdrive from "hyperdrive";
 import { ReactNode } from "react";
-
-export interface ProfileI {
-  id?: string;
-  name?: string;
-  email?: string;
-  // Add other profile fields as needed
-}
+import { ProfileI } from "..";
 
 export interface ProfileContextI {
   profile: ProfileI | null;

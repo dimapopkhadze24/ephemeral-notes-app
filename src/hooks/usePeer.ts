@@ -7,6 +7,7 @@ export const usePeer = (hyperdrive: Hyperdrive) => {
 
   const getProfile = async () => {
     const buf = await hyperdrive.get("/meta/profile.json");
+
     if (!buf) return;
     setProfile(JSON.parse(buf));
   };
@@ -30,5 +31,5 @@ export const usePeer = (hyperdrive: Hyperdrive) => {
     };
   }, [hyperdrive]);
 
-  return profile;
+  return { profile };
 };

@@ -16,9 +16,11 @@ const ContactsComponent = () => {
           Hello :{profile?.name}
         </Typography>
       </Flex>
-      {Object.entries(peers).map(([key, peer]) => (
-        <ContactsPeerCard key={key} hyperdrive={peer.hyperdrive} />
-      ))}
+      <Flex gap={16}>
+        {Object.entries(peers).map(([key, peer]) => (
+          <ContactsPeerCard key={key} hyperdrive={peer.hyperdrive} />
+        ))}
+      </Flex>
     </Flex>
   );
 };

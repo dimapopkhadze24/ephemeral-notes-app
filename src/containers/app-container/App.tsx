@@ -5,6 +5,7 @@ import { Loader } from "@/ui";
 import StartScreenComponent from "@/components/start-screen-components/StartScreenComponent";
 import ProfileComponent from "@/components/profile-components/ProfileComponent";
 import ContactsComponent from "@/components/contacts-components/ContactsComponent";
+import NotesComponent from "@/components/notes-component/NotesComponent";
 
 const App = () => {
   const { screen, setScreen } = useAppStore();
@@ -29,6 +30,8 @@ const App = () => {
   if (screen === "profile") return <ProfileComponent />;
 
   if (screen === "contacts") return <ContactsComponent />;
+
+  if (screen === "notes") return <NotesComponent />;
 };
 
 export default App;
