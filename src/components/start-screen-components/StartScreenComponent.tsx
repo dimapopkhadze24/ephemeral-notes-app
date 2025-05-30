@@ -4,7 +4,7 @@ import useAppStore from "@/store/appStore";
 const StartScreenComponent = () => {
   const { setScreen } = useAppStore();
   const onGetStartedHandler = () => {
-    setScreen("profile");
+    setScreen("profile-setup");
   };
   return (
     <Flex gap={32} flex={1} align="center" justify="center">

@@ -3,9 +3,10 @@ import { useProfile, usePeers } from "@/hooks";
 import { useEffect } from "react";
 import { Loader } from "@/ui";
 import StartScreenComponent from "@/components/start-screen-components/StartScreenComponent";
-import ProfileComponent from "@/components/profile-components/ProfileComponent";
 import ContactsComponent from "@/components/contacts-components/ContactsComponent";
 import NotesComponent from "@/components/notes-component/NotesComponent";
+import ProfileSetupComponent from "@/components/profile-setup-components/ProfileComponent";
+import SettingsComponent from "@/components/settings-component/SettingsComponent";
 
 const App = () => {
   const { screen, setScreen } = useAppStore();
@@ -27,11 +28,13 @@ const App = () => {
 
   if (screen === "start") return <StartScreenComponent />;
 
-  if (screen === "profile") return <ProfileComponent />;
+  if (screen === "profile-setup") return <ProfileSetupComponent />;
 
   if (screen === "contacts") return <ContactsComponent />;
 
   if (screen === "notes") return <NotesComponent />;
+
+  if (screen === "settings") return <SettingsComponent />;
 };
 
 export default App;
