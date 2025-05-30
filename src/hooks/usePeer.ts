@@ -8,8 +8,6 @@ export const usePeer = (hyperdrive: Hyperdrive) => {
   const getProfile = async () => {
     const buf = await hyperdrive.get("/meta/profile.json");
 
-    const name = await hyperdrive.get("/meta/dima.json");
-
     if (!buf) return;
     setProfile(JSON.parse(buf));
   };
