@@ -19,16 +19,24 @@ export const ProfileProvider = ({ children, config }: ProfileProviderI) => {
 
   const initProfile = async () => {
     const exists = await hyperdriveRef.current.exists("/meta/profile.json");
+
     if (exists) return;
 
-    await updateProfile({ name: "New user" });
+    const newUser = {
+      name: "New user",
+      id: hyperdriveRef.current.key.toString("hex"),
+    };
+
+    await updateProfile(newUser);
   };
 
   const getProfile = async () => {
     const buf = await hyperdriveRef.current.get("/meta/profile.json");
 
     if (!buf) return;
-    setProfile(JSON.parse(buf));
+    const parsedProfile = JSON.parse(buf);
+
+    setProfile(parsedProfile);
   };
   useEffect(() => {
     hyperdriveRef.current
@@ -55,10 +63,17 @@ export const ProfileProvider = ({ children, config }: ProfileProviderI) => {
     };
   }, [hyperdriveRef.current]);
 
-  const updateProfile = async (profile: Partial<ProfileI>) => {
+  const updateProfile = async (updatingProfile: Partial<ProfileI>) => {
+    const newProfile = {
+      name: updatingProfile.name || profile?.name,
+      email: updatingProfile.email || profile?.email,
+      id: updatingProfile.id || profile?.id,
+    };
+
+    setProfile(newProfile);
     await hyperdriveRef.current.put(
       "/meta/profile.json",
-      Buffer.from(JSON.stringify(profile))
+      Buffer.from(JSON.stringify(newProfile))
     );
   };
 

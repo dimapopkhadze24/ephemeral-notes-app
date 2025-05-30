@@ -18,8 +18,16 @@ declare module "hyperdrive" {
   class Hyperdrive {
     constructor(corestore: CorestoreI, key?: string);
     exists(path: string): Promise<boolean>;
-    get(path: string): Promise<string | null>;
-    list(folder: string): string[];
+    get(
+      path: string,
+      options?: { follow?: boolean; timeout?: number }
+    ): Promise<string | null>;
+    list(folder: string): {
+      key: string;
+      value: {
+        blob: {};
+      };
+    }[];
     readdir(folder: string): Promise<string[]>;
     put(path: string, data: Buffer): Promise<void>;
     ready(): Promise<void>;

@@ -4,20 +4,18 @@ import styled from "styled-components";
 import useChatStore from "@/store/chatStore";
 import Hyperdrive from "hyperdrive";
 import { useNotes } from "@/hooks/useNotes";
-import { useProfile } from "@/hooks";
 import { NoteOptionT } from "@/types";
+import useAppStore from "@/store/appStore";
+import NoteDisplayComponent from "./components/NoteDisplayComponent";
 
 const NotesComponent = () => {
   const { contactHyperdrive } = useChatStore();
+  const { setScreen } = useAppStore();
 
-  const { profile } = useProfile();
-
-  const { notes, putNotes, updateNotes } = useNotes(
-    profile?.id as string,
+  const { sentNotes, receivedNotes, sendNote, updateNote } = useNotes(
     contactHyperdrive as Hyperdrive
   );
 
-  // const profile = usePeer(contactHyperdrive as Hyperdrive);
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -25,27 +23,66 @@ const NotesComponent = () => {
     const noteOption = formData.get("note-option");
     if (!notes || !noteOption) return;
 
-    putNotes({
+    sendNote({
       note: notes.toString(),
       views: noteOption as unknown as NoteOptionT,
       remainingViews: noteOption as unknown as number,
       createdAt: new Date().toISOString(),
       modifiedAt: new Date().toISOString(),
+    }).then(() => {
+      // Reset the form
+      (e.target as HTMLFormElement).reset();
     });
   };
   return (
     <Flex justify="space-between" flex={1}>
-      <Flex gap={4} align="center">
-        <Typography color="light700" variant="h3">
-          Send Ephemeral Notes
-        </Typography>
-        <Typography variant="h5">
-          Send a note to a contact that will be deleted after chosen number of
-          views.
-        </Typography>
+      <Flex direction="row" gap={16}>
+        <Button
+          mode="secondary"
+          onClick={() => {
+            setScreen("contacts");
+          }}
+        >{`<`}</Button>
+        <Flex gap={4} flex={1}>
+          <Typography color="light700" variant="h3">
+            Send Ephemeral Notes
+          </Typography>
+          <Typography variant="h5">
+            Send a note to a contact that will be deleted after chosen number of
+            views.
+          </Typography>
+        </Flex>
       </Flex>
+      <Flex direction="row" flex={1} gap={8}>
+        <Flex flex={1} gap={8}>
+          <Typography color="light700" variant="h3">
+            Sent Notes
+          </Typography>
+          {sentNotes.map((note) => (
+            <NoteDisplayComponent {...note} ShowNote={true} key={note.id} />
+          ))}
+        </Flex>
+        <Flex flex={1} gap={8}>
+          <Typography color="light700" variant="h3">
+            Received Notes
+          </Typography>
+          {receivedNotes.map((note) => (
+            <NoteDisplayComponent
+              {...note}
+              ShowNote={false}
+              updateNote={updateNote}
+              key={note.id}
+            />
+          ))}
+        </Flex>
+      </Flex>
+
       <NotesForm onSubmit={onSubmitHandler}>
-        <NotesInput label="notes" name="notes" />
+        <Input
+          style={{ flex: 1 }}
+          name="notes"
+          placeholder="Type your note here"
+        />
         <NotesSelect name="note-option">
           {noteOptions.map((option) => (
             <option key={option.value} value={option.value}>
@@ -64,10 +101,6 @@ export default NotesComponent;
 const NotesSelect = styled(Select)`
   width: 100%;
   max-width: 200px;
-`;
-
-const NotesInput = styled(Input)`
-  flex: 1;
 `;
 
 const NotesForm = styled.form`

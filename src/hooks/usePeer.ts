@@ -8,6 +8,8 @@ export const usePeer = (hyperdrive: Hyperdrive) => {
   const getProfile = async () => {
     const buf = await hyperdrive.get("/meta/profile.json");
 
+    const name = await hyperdrive.get("/meta/dima.json");
+
     if (!buf) return;
     setProfile(JSON.parse(buf));
   };
@@ -17,7 +19,7 @@ export const usePeer = (hyperdrive: Hyperdrive) => {
   }, []);
 
   useEffect(() => {
-    const profileWatcher = hyperdrive.watch("/meta", { recursive: false });
+    const profileWatcher = hyperdrive.watch("/meta", { recursive: true });
 
     watchForever();
     async function watchForever() {

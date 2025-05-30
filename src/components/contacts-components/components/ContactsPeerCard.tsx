@@ -7,7 +7,7 @@ import useAppStore from "@/store/appStore";
 import useChatStore from "@/store/chatStore";
 
 const ContactsPeerCard: React.FC<ContactsPeerCardI> = ({ hyperdrive }) => {
-  const profile = usePeer(hyperdrive);
+  const { profile } = usePeer(hyperdrive);
   const { setScreen } = useAppStore();
   const { setContactHyperdrive } = useChatStore();
   const onContactSelectHandler = () => {

@@ -45,8 +45,8 @@ export const Button = styled.button.attrs<ButtonI>(({ type = "button" }) => ({
   font-weight: 500;
   color: ${({ mode }) =>
     mode === "primary"
-      ? "var(--primary-dark-color-main)"
-      : "var(--primary-dark-color-700)"};
+      ? "var(--primary-light-color-main)"
+      : "var(--primary-light-color-700)"};
   transition: opacity 0.2s ease-in-out;
 
   &:hover {

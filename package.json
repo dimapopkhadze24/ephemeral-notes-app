@@ -10,6 +10,7 @@
     "build:swc:watch": "npm run build:swc -- --watch --config-file .swcrcdev",
     "build": "npm run build:swc",
     "start": "pear run -s ../storage .",
+    "start:alt": "pear run -s ../storage-alt .",
     "dev:start": "RUN_ENV=dev pear run -s ../storage -d . ",
     "dev:start:alt": "RUN_ENV=dev pear run -s ../storage-alt -d . ",
     "dev:watch": "concurrently --kill-others --kill-others-on-fail \"npm run build:swc:watch\" \"npm run dev:start\"",
