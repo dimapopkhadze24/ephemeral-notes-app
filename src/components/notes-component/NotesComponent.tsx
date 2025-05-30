@@ -35,7 +35,7 @@ const NotesComponent = () => {
     });
   };
   return (
-    <Flex justify="space-between" flex={1}>
+    <Flex justify="space-between" flex={1} gap={16}>
       <Flex direction="row" gap={16}>
         <Button
           mode="secondary"
@@ -53,33 +53,49 @@ const NotesComponent = () => {
           </Typography>
         </Flex>
       </Flex>
-      <Flex direction="row" flex={1} gap={8}>
-        <Flex flex={1} gap={8}>
+      <NoteContainer direction="row" flex={1} gap={8}>
+        <Flex flex={1} gap={16}>
           <Typography color="light700" variant="h3">
             Sent Notes
           </Typography>
-          {sentNotes.map((note) => (
-            <NoteDisplayComponent {...note} ShowNote={true} key={note.id} />
-          ))}
+          <NotesWrapper gap={8}>
+            {sentNotes
+              .sort(
+                (a, b) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              )
+              .map((note) => (
+                <NoteDisplayComponent {...note} ShowNote={true} key={note.id} />
+              ))}
+          </NotesWrapper>
         </Flex>
-        <Flex flex={1} gap={8}>
+        <Flex flex={1} gap={16}>
           <Typography color="light700" variant="h3">
             Received Notes
           </Typography>
-          {receivedNotes.map((note) => (
-            <NoteDisplayComponent
-              {...note}
-              ShowNote={false}
-              updateNote={updateNote}
-              key={note.id}
-            />
-          ))}
+          <NotesWrapper gap={8}>
+            {receivedNotes
+              .sort(
+                (a, b) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              )
+              .map((note) => (
+                <NoteDisplayComponent
+                  {...note}
+                  ShowNote={false}
+                  updateNote={updateNote}
+                  key={note.id}
+                />
+              ))}
+          </NotesWrapper>
         </Flex>
-      </Flex>
+      </NoteContainer>
 
       <NotesForm onSubmit={onSubmitHandler}>
         <Input
-          style={{ flex: 1 }}
+          style={{ flex: 1, alignSelf: "normal" }}
           name="notes"
           placeholder="Type your note here"
         />
@@ -108,4 +124,12 @@ const NotesForm = styled.form`
   flex-direction: row;
   gap: 8px;
   align-items: flex-end;
+`;
+
+const NoteContainer = styled(Flex)`
+  max-height: calc(100vh - var(--title-bar-height) - 32px - 83px - 32px);
+`;
+
+const NotesWrapper = styled(Flex)`
+  overflow-y: auto;
 `;

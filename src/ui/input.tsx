@@ -11,9 +11,9 @@ export const StyledInput = styled.input`
   padding: 0 16px;
 `;
 
-export const Input: React.FC<InputI> = ({ label, ...props }) => {
+export const Input: React.FC<InputI> = ({ label, style, ...props }) => {
   return (
-    <Flex gap={8}>
+    <Flex gap={8} style={style}>
       {label && <Typography variant="h5">{label}</Typography>}
       <StyledInput {...props} />
     </Flex>

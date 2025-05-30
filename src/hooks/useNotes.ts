@@ -22,7 +22,8 @@ export const useNotes = (contactHyperdrive: Hyperdrive) => {
       `${sentNotePath}/${contactDriveKey}`
     )) {
       const message = await userHyperdrive.get(file.key);
-      if (!message) return;
+      if (!message) continue;
+
       notes.push(JSON.parse(message));
     }
 
@@ -30,20 +31,24 @@ export const useNotes = (contactHyperdrive: Hyperdrive) => {
   };
 
   const fetchFileKeys = async () => {
+    let fileKeys: string[] = [];
+
     for await (const file of contactHyperdrive.list(
       `${sentNotePath}/${profile?.id}`
     )) {
-      setFileKeys([file.key]);
+      fileKeys.push(file.key);
     }
+
+    setFileKeys(fileKeys);
   };
 
-  const checkAndPutReceivedNotes = async () => {
+  const checkAndUpdateReceivedNotes = async () => {
     if (!fileKeys) return;
 
     for (const fileKey of fileKeys) {
       const driveNote = await contactHyperdrive.get(fileKey);
 
-      if (!driveNote) return;
+      if (!driveNote) continue;
 
       const note = JSON.parse(driveNote);
 
@@ -51,7 +56,7 @@ export const useNotes = (contactHyperdrive: Hyperdrive) => {
         `${receivedNotePath}/${contactDriveKey}/${note.id}.json`
       );
 
-      if (noteExists) return;
+      if (noteExists) continue;
 
       await userHyperdrive.put(
         `${receivedNotePath}/${contactDriveKey}/${note.id}.json`,
@@ -68,16 +73,14 @@ export const useNotes = (contactHyperdrive: Hyperdrive) => {
     )) {
       const message = await userHyperdrive.get(file.key);
 
-      if (!message) return;
+      if (!message) continue;
 
       const parsedMessage = JSON.parse(message);
 
-      if (parsedMessage.remainingViews == 0) return;
-      console.log(notes, "inside", parsedMessage);
+      if (parsedMessage.remainingViews === 0) continue;
 
       notes.push(parsedMessage);
     }
-    console.log(notes, "outside");
 
     setReceivedNotes(notes);
   };
@@ -115,7 +118,7 @@ export const useNotes = (contactHyperdrive: Hyperdrive) => {
   }, []);
 
   useEffect(() => {
-    checkAndPutReceivedNotes().then(getReceivedNotes);
+    checkAndUpdateReceivedNotes().then(getReceivedNotes);
   }, [fileKeys]);
 
   useEffect(() => {

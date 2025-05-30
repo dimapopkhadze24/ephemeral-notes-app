@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NoteDisplayI } from "@/types";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Flex, Typography } from "@/ui";
 
 const NoteDisplayComponent: React.FC<NoteDisplayI> = ({
@@ -20,9 +20,11 @@ const NoteDisplayComponent: React.FC<NoteDisplayI> = ({
   return (
     <NoteDisplayStyled shownote={displayNote} onClick={onNoteClickHandler}>
       {displayNote ? (
-        <Typography variant="h5">{note}</Typography>
+        <Typography variant="h5" color="light700">
+          {note}
+        </Typography>
       ) : (
-        <Typography variant="h5">
+        <Typography variant="h5" color="brandMain">
           Show Note. Remaining views: {remainingViews}
         </Typography>
       )}
@@ -38,4 +40,14 @@ const NoteDisplayStyled = styled(Flex)<{ shownote: boolean }>`
   background-color: var(--primary-light-color-700);
   border: 1px solid var(--primary-light-color-500);
   cursor: ${({ shownote }) => (shownote ? "default" : "pointer")};
+  transition: all 0.2s ease-in-out;
+
+  ${({ shownote }) =>
+    !shownote &&
+    css`
+      &:hover {
+        background-color: var(--primary-light-color-500);
+      }
+    `}
+  }
 `;
